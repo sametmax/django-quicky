@@ -107,3 +107,7 @@ Oh, and of you can define your own conditions:
     def conditional_view(request, context):
         # do more stuff
         return context
+
+------------------------------
+
+Oh, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>, BTW.
