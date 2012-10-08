@@ -68,7 +68,12 @@ Rendering template and json bore you to death ? Just say the word:
 
 For the first one, the returned dictionary will be used as a context to render the template. For the second one, it will be serialised to JSON.
 
-But that's not all. You can also declare alternative rendering:
+Conditional rendering
+=======================
+
+Because I know you like dirty talking and big words...
+
+You can also declare alternative rendering:
 
 
     from django_quicky import view
@@ -89,3 +94,15 @@ But that's not all. You can also declare alternative rendering:
 The first view will be rendered as-is if it receives a normal GET request. The second vew will be rendered only for POST requests, but will be passed the result of the first view before. The second vew will be rendered only for AJAX requests, and as JSON, but will be passed the result of the first view before.
 
 Just remember that alternative views must accept `context` as a parameter, because they will always receive the result of the main view.
+
+Oh, and of you can define your own conditions:
+
+
+    @view(render_to='template.html')
+    def common_views(request):
+        return {'stuff': stuff}
+
+    @common_views.render_if(conditon=a_function_that_returns_a_bool)
+    def conditional_view(request, context):
+        # do more stuff
+        return context
