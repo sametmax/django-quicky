@@ -19,6 +19,7 @@ You will fall in love with it if you ever had the fantasm you could do:
 
 And yes, this is alpha software, but you already want it, so don't fight it !
 
+So `pip install django-quicky`.
 
 Url decorators
 ===============

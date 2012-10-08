@@ -3,26 +3,6 @@
 # vim: ai ts=4 sts=4 et sw=4 nu
 
 
-"""
-    Django-quicky is what you want when you feel like skipping the forplay and
-    going strait to the point.
-
-    You will fall in love with it if you ever had the fantasm you could do:
-
-    @url('/user/\d+')
-    @view(render_to='user.html'):
-    def user_view(request, id)
-        ...
-        return {'users': users}
-
-
-    @user_view.ajax(render_to='json')
-    def ajax_user_view(request, id, context):
-        ...
-        return context
-"""
-
-
 import json
 import types
 from functools import wraps, partial
