@@ -69,6 +69,11 @@ Rendering template and json bore you to death ? Just say the word:
 
 For the first one, the returned dictionary will be used as a context to render the template. For the second one, it will be serialised to JSON.
 
+/!\ WARNING:
+
+The view decorator should always be the first decorator to be applied. Only by doing so you garanti it will work with other decorators such as `@login_required`.
+
+
 Conditional rendering
 =======================
 
