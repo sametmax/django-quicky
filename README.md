@@ -113,6 +113,43 @@ Oh, and of you can define your own conditions:
         # do more stuff
         return context
 
+
+Super user middleware
+======================
+
+
+Double authentification ? Short session timeout ? Permission issue ? Loooooooong password.
+
+In, dev, just do:
+
+    if DEBUG:
+
+        MIDDLEWARE_CLASSES += (
+            'django_quicky.middleware.ForceSuperUserMiddleWare',
+        )
+
+
+You wil always be logged in as a super user. No password required. No timeout.
+
+
+Serve static middleware
+========================
+
+
+Serving static files in dev without worries:
+
+
+    if DEBUG:
+
+        MIDDLEWARE_CLASSES += (
+            'django_quicky.middleware.StaticServe',
+        )
+
+And if you do want to test your site with `DEBUG` set to False, you can just remove the condition.
+
+(Idea borrowed from the excellent <a href="https://bitbucket.org/offline/django-annoying/wiki/Home">django-annoying</a>, but I stripped the internal test on `DEBUG` which is a pain for testing.)
+
+
 ------------------------------
 
-Oh, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>, BTW.
+BTW, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>.
