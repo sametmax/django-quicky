@@ -6,6 +6,7 @@ import re
 
 from django.conf import settings
 from django.views.static import serve
+from django.contrib.staticfiles.views import serve as serve_static
 
 from django.contrib.auth.models import User
 
@@ -29,9 +30,17 @@ class StaticServe(object):
         a separate settings file to activate it at will.
     """
 
-    regex = re.compile(r'^%s(?P<path>.*)$' % settings.MEDIA_URL)
+    media, static = settings.MEDIA_URL.rstrip('/'), settings.STATIC_URL.rstrip('/')
+    media_regex = re.compile(r'^%s/(?P<path>.*)$' % media)
+    static_regex = re.compile(r'^%s/(?P<path>.*)$' % static)
+
 
     def process_request(self, request):
-        match = self.regex.search(request.path)
+
+        match = self.media_regex.search(request.path)
         if match:
             return serve(request, match.group(1), settings.MEDIA_ROOT)
+
+        match = self.static_regex.search(request.path)
+        if match:
+            return serve_static(request, match.group(1), insecure=True)
