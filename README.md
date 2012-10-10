@@ -60,6 +60,14 @@ And since you often add the admin url:
 
     urlpatterns.add_admin(url)
 
+Adding http error views is neither hard nor most of the time useful, but for consitency:
+
+    @url.http404
+    def http404(request):
+        ...
+
+Of course, your view needs to return the proper status code.
+
 
 View decorators
 ===============
@@ -161,6 +169,15 @@ And if you do want to test your site with `DEBUG` set to False, you can just rem
 
 (Idea borrowed from the excellent <a href="https://bitbucket.org/offline/django-annoying/wiki/Home">django-annoying</a>, but I stripped the internal test on `DEBUG` which is a pain for testing.)
 
+Settings context processor
+==========================
+
+Because you always need access to settings in your template one day or the other, but most of the time, right now:
+
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        ...
+        "django_quicky.context_processors.settings"
+    )
 
 ------------------------------
 

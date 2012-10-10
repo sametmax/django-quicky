@@ -7,9 +7,11 @@ import json
 import types
 from functools import wraps, partial
 
+import django
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.conf.urls import include, url as addurl
+
 
 from django.contrib import admin
 
@@ -159,6 +161,21 @@ def routing(root=""):
             return func
 
         return decorator
+
+    def http403(func):
+        django.conf.urls.handler403 = func
+        return func
+    url.http403 = http403
+
+    def http404(func):
+        django.conf.urls.handler404 = func
+        return func
+    url.http404 = http404
+
+    def http405(func):
+        django.conf.urls.handler405 = func
+        return func
+    url.http405 = http405
 
     return url, urlpatterns
 
