@@ -9,7 +9,9 @@ from functools import wraps, partial
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.conf.urls import patterns, url as addurl
+from django.conf.urls import include, url as addurl
+
+from django.contrib import admin
 
 from utils import HttpResponseException
 
@@ -144,7 +146,7 @@ def routing(root=""):
 
     """
 
-    urlpatterns = []
+    urlpatterns = UrlList()
 
     def url(regex, kwargs=None, name=None, prefix=''):
 
@@ -159,3 +161,29 @@ def routing(root=""):
         return decorator
 
     return url, urlpatterns
+
+
+class UrlList(list):
+    """
+        Sublass list to allow shortcuts to add urls to this pattern.
+    """
+
+    admin_added = False
+
+
+    def add_url(self, regex, func, kwargs=None, name="", prefix=""):
+        self.append(addurl(regex, func, kwargs, name, prefix))
+
+
+    def include(self, regex, module, name="", prefix=""):
+        self.add_url(regex, include(module), name=name, prefix=prefix)
+
+
+    def add_admin(self, url):
+
+        if not UrlList.admin_added:
+            admin.autodiscover()
+
+        self.include(url, admin.site.urls, 'admin')
+
+        UrlList.admin_added = True

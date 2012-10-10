@@ -46,7 +46,19 @@ Shhh, baby. Talk no more:
 
 Just declare your routing in the view. And use your view file in `URL_ROOT` or any `include()` like you would do with `urls.py`.
 
-Just remember, the order you declare you routing matters as much as it does in urls.py.
+**Remember, the order you declare you routing matters as much as it does in urls.py.**
+
+If you are in the mood for fancy stuff, like adding an url manually, just do:
+
+    urlpatterns.add_url(url, view, [kwargs, name, prefix])
+
+And for an include:
+
+    urlpatterns.include(url, view, [name, prefix])
+
+And since you often add the admin url:
+
+    urlpatterns.add_admin(url)
 
 
 View decorators
