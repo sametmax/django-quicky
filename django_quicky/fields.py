@@ -4,13 +4,20 @@
 
 
 """
-    This code is borrowed from django-annoying.
+    Part of the code is borrowed from django-annoying.
 
     https://bitbucket.org/offline/django-annoying/wiki/Home
 """
 
+from django.db import models
+
 from django.db.models import OneToOneField
 from django.db.models.fields.related import SingleRelatedObjectDescriptor
+
+try:
+    from south.modelsinspector import add_introspection_rules
+except ImportError:
+    add_introspection_rules = lambda x: x
 
 
 class AutoSingleRelatedObjectDescriptor(SingleRelatedObjectDescriptor):
@@ -36,3 +43,37 @@ class AutoOneToOneField(OneToOneField):
     '''
     def contribute_to_related_class(self, cls, related):
         setattr(cls, related.get_accessor_name(), AutoSingleRelatedObjectDescriptor(related))
+
+
+
+class IntegerRangeField(models.IntegerField):
+
+    """
+        Equvalent of the django Integer Field but with min and max value.
+    """
+
+    def __init__(self, verbose_name=None, name=None,
+                 min_value=None, max_value=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
+
+
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value':self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
+
+
+
+# if South is installed, provide introspection rules for it's migration
+# see: http://south.aeracode.org/docs/tutorial/part4.html#tutorial-part-4
+add_introspection_rules([
+    (
+        [IntegerRangeField],
+        [],
+        {
+            "min_value": ["min_value", {"default": None}],
+            "max_value": ["max_value", {"default": None}],
+        },
+    ),
+], ["^libs\.models\.IntegerRangeField"])
