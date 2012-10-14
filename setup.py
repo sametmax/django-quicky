@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 src_directory = 'django-quiky'
 
 open('MANIFEST.in', 'w').write('\n'.join((
-    "include *.rst *.tx *.md",
+    "include *.md",
 )))
 
 setup(
