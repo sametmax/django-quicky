@@ -10,7 +10,7 @@ open('MANIFEST.in', 'w').write('\n'.join((
 setup(
 
     name="django-quicky",
-    version="0.3.1",
+    version="0.3.2",
     packages=find_packages('.'),
     author="Sam et Max",
     author_email="lesametlemax@gmail.com",

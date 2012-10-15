@@ -52,9 +52,9 @@ def render_if(self, render_to=None, condition=lambda: False):
     return decorator
 
 # Thers
-render_if_ajax = partial(render_if, condition=lambda r: r.is_ajax())
-render_if_get = partial(render_if, condition=lambda r: r.method == 'GET')
-render_if_post = partial(render_if, condition=lambda r: r.method == 'POST')
+render_if_ajax = partial(render_if, condition=lambda r, *a, **k: r.is_ajax())
+render_if_get = partial(render_if, condition=lambda r, *a, **k: r.method == 'GET')
+render_if_post = partial(render_if, condition=lambda r, *a, **k: r.method == 'POST')
 
 
 def view(render_to=None):
