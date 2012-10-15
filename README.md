@@ -182,3 +182,10 @@ Because you always need access to settings in your template one day or the other
 ------------------------------
 
 BTW, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>.
+
+DEBUGGING
+==========
+
+The first rule when debugging decorators, is to be sure you use the right syntax: `@decorator` and `@decorator()` are all very different and both valid. In django-quickly case, all decorators should be called with `@decorator()` or `@decorator(arguments)`.
+
+Also remember that when it comes to decorators, __order matters__. Most of the time, you don't care about the order you apply your decorators, but in this case, you should ALWAYS apply `@view` first. And you probably want to apply Django decorators last, as they usually deal with permissions and cache, which should be checked first.
