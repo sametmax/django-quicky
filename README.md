@@ -46,7 +46,11 @@ Shhh, baby. Talk no more:
 
 Just declare your routing in the view. And use your view file in `URL_ROOT` or any `include()` like you would do with `urls.py`.
 
-**Remember, the order you declare you routing matters as much as it does in urls.py.**
+**Remember, order matters, so:**
+
+- views declared first will match first. Avoid declaring `@url(r'^$')` first (at the begining of views.py) or it will prevent other from matching.
+- when using several `@url` on the same view, the first applied (the lowest `@url` in the decorators pile) will match first.
+- always put `@url` as the LAST decorator applied (at the very top of the decorators pile).
 
 If you are in the mood for fancy stuff, like adding an url manually, just do:
 
@@ -89,9 +93,9 @@ Rendering template and json bore you to death ? Just say the word:
 
 For the first one, the returned dictionary will be used as a context to render the template. For the second one, it will be serialised to JSON.
 
-/!\ WARNING:
+**/!\ WARNING:**
 
-The view decorator should always be the first decorator to be applied. Only by doing so you garanti it will work with other decorators such as `@login_required`.
+The view decorator should always be the first decorator to be applied (the lowest one in the decorator pile).
 
 
 Conditional rendering
@@ -188,4 +192,14 @@ DEBUGGING
 
 The first rule when debugging decorators, is to be sure you use the right syntax: `@decorator` and `@decorator()` are all very different and both valid. In django-quickly case, all decorators should be called with `@decorator()` or `@decorator(arguments)`.
 
-Also remember that when it comes to decorators, __order matters__. Most of the time, you don't care about the order you apply your decorators, but in this case, you should ALWAYS apply `@view` first. And you probably want to apply Django decorators last, as they usually deal with permissions and cache, which should be checked first.
+Also remember that when it comes to decorators, **order matters**. Most of the time, you don't care about the order you apply your decorators, but in this case, you should ALWAYS apply `@view` first and `@url` last. E.G:
+
+    url(r'$')
+    @login_required
+    @view('app/home.html')
+    def home(request):
+        ...
+
+If you don't do this, some decorators will ne be executed as `@view` bypass decorators applied before it and `@url` by pass decorators after it.
+
+Also, the order in which you declare your fonction matters, just like patterns order matter in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the times, since the others will never have a chance to match.
