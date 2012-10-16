@@ -71,7 +71,7 @@ class AutoLogNewUser(object):
                 request.session['django_quicky:user_id'] = user.pk
                 res = request.path
                 if self.CALLBACK:
-                    res = self.CALLBACK()
+                    res = self.CALLBACK(request)
                 return redirect(res or request.path)
 
             else:
