@@ -183,9 +183,6 @@ Because you always need access to settings in your template one day or the other
         "django_quicky.context_processors.settings"
     )
 
-------------------------------
-
-BTW, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>.
 
 DEBUGGING
 ==========
@@ -203,3 +200,9 @@ Also remember that when it comes to decorators, **order matters**. Most of the t
 If you don't do this, some decorators will ne be executed as `@view` bypass decorators applied before it and `@url` by pass decorators after it.
 
 Also, the order in which you declare your fonction matters, just like patterns order matter in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the times, since the others will never have a chance to match.
+
+------------------------------
+
+BTW, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>.
+
+It embeds <a href="https://github.com/amnong/namegen">namegen</a>, a name generator under BSD licence.
