@@ -3,15 +3,11 @@
 # vim: ai ts=4 sts=4 et sw=4 nu
 
 
-__VERSION__ = "0.4.3"
+__VERSION__ = "0.4.4"
 
-try:
-    # we may want to read the __init__ file to get the version outiside
-    # of the scope of Django and the next imports will fails because
-    # without any settings.py file provided
-    from django import http
-except ImportError:
-    pass
-else:
-    from decorators import view, routing
-    from utils import get_object_or_None, setting
+# we may want to read the __init__ file to get the version outiside
+# of the scope of Django and the next imports will fails because
+# without any settings.py file provided
+from decorators import view, routing
+from utils import get_object_or_None, setting
+
