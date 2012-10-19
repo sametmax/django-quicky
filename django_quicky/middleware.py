@@ -8,7 +8,7 @@ import random
 from django.conf import settings
 from django.views.static import serve
 from django.contrib.staticfiles.views import serve as serve_static
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from django.contrib.auth.models import User
 
@@ -60,19 +60,34 @@ class AutoLogNewUser(object):
 
     def process_request(self, request):
 
+
+        if 'django-quicky-test-cookie' in request.path:
+
+            if not request.session.test_cookie_worked():
+                return render(request, 'django_quicky/no_cookies.html',
+                              {'next': request.GET.get('next', '/')})
+
+            request.session.delete_test_cookie()
+
+            first_name = iter(NameGenerator()).next().title()
+            username = "%s%s" % (first_name, random.randint(10, 100))
+            user = User.objects.create(username=username,
+                                       first_name=first_name)
+            request.session['django-quicky:user_id'] = user.pk
+            next = request.GET.get('next', '/')
+            if self.CALLBACK:
+                res = self.CALLBACK(request)
+            return redirect(res or next)
+
         if not request.user.is_authenticated():
 
-            user_id = request.session.get('django_quicky:user_id', None)
+            user_id = request.session.get('django-quicky:user_id', None)
 
             if not user_id:
-                first_name = iter(NameGenerator()).next().title()
-                username = "%s%s" % (first_name, random.randint(10, 100))
-                user = User.objects.create(username=username, first_name=first_name)
-                request.session['django_quicky:user_id'] = user.pk
-                res = request.path
-                if self.CALLBACK:
-                    res = self.CALLBACK(request)
-                return redirect(res or request.path)
 
-            else:
-                request.user = User.objects.get(pk=user_id)
+                request.session.set_test_cookie()
+                return redirect('/django-quicky-test-cookie/?next=%s' % request.path)
+
+            request.user = User.objects.get(pk=user_id)
+
+

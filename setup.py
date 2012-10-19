@@ -1,7 +1,7 @@
 
 from setuptools import setup, find_packages
 
-src_directory = 'django-quiky'
+from django_quicky import __version__
 
 open('MANIFEST.in', 'w').write('\n'.join((
     "include *.md",
@@ -10,7 +10,7 @@ open('MANIFEST.in', 'w').write('\n'.join((
 setup(
 
     name="django-quicky",
-    version="0.4.1",
+    version=__version__,
     packages=find_packages('.'),
     author="Sam et Max",
     author_email="lesametlemax@gmail.com",
