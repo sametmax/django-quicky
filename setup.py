@@ -17,6 +17,7 @@ setup(
     description="A collection of toys to skip the forplay with Django and go straight to the point: url and view decorators",
     long_description=open('README.md').read(),
     include_package_data=True,
+    install_requires=['django'],
     classifiers=[
         'Programming Language :: Python',
         "Intended Audience :: Information Technology",
