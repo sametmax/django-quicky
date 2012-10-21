@@ -2,7 +2,8 @@
 from setuptools import setup, find_packages
 
 open('MANIFEST.in', 'w').write('\n'.join((
-    "recursive-include *.md *.html",
+    "include *.md",
+    "recursive-include django_quicky *.html",
 )))
 
 setup(
