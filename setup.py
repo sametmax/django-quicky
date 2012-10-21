@@ -2,13 +2,13 @@
 from setuptools import setup, find_packages
 
 open('MANIFEST.in', 'w').write('\n'.join((
-    "include *.md",
+    "recursive-include *.md *.html",
 )))
 
 setup(
 
     name="django-quicky",
-    version="0.4.4",
+    version="0.4.5",
     packages=find_packages('.'),
     author="Sam et Max",
     author_email="lesametlemax@gmail.com",
