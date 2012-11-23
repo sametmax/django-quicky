@@ -3,7 +3,7 @@
 # vim: ai ts=4 sts=4 et sw=4 nu
 
 
-__VERSION__ = "0.4.5"
+__VERSION__ = "0.4.6"
 
 # we may want to read the __init__ file to get the version outiside
 # of the scope of Django and the next imports will fails because
