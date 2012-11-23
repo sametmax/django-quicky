@@ -1,17 +1,25 @@
-from .names import names as default_names
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+"""
+    Generate random usernames in
+"""
+
 import random
 
+from .names import names as default_names
+
+
 class NameGenerator(object):
-    def __init__(self, names=default_names):
-        self._names = {i : name.strip() for i, name in enumerate(names)}
-        self._total_names = len(self._names)
-        self._used_indices = set()
+
+    def __init__(self, names=None):
+        self.names = names or default_names
+
+
     def __call__(self):
-        index = random.randrange(self._total_names)
-        name = self._names[index]
-        if index not in self._used_indices:
-            self._used_indices.add(index)
-            return name
+        return self.names.pop(random.randrange(len(self.names)))
+
     def __iter__(self):
-        while True:
+        while self.names:
             yield self()

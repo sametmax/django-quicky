@@ -124,6 +124,8 @@ def view(render_to=None):
                     if rendering == 'json':
                         return HttpResponse(json.dumps(response),
                                             mimetype="application/json")
+                    if rendering == 'raw':
+                        return HttpResponse(response)
                     return render(request, rendering, response)
                 return response
             except HttpResponseException as e:
