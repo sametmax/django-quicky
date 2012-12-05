@@ -8,7 +8,7 @@ from django.shortcuts import _get_queryset
 from django.db.models import Max
 
 
-__all__ = ['get_random_objects', 'get_object_or_None']
+__all__ = ['get_random_objects', 'get_object_or_none']
 
 
 
