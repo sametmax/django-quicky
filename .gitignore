@@ -19,6 +19,7 @@
 
 *.egg-info
 dist
+build
 *.tar.gz
 *.egg
 *.in

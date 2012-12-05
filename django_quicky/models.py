@@ -2,6 +2,16 @@
 # -*- coding: utf-8 -*-
 # vim: ai ts=4 sts=4 et sw=4 nu
 
+from random import randint
+
+from django.shortcuts import _get_queryset
+from django.db.models import Max
+
+
+__all__ = ['get_random_objects', 'get_object_or_None']
+
+
+
 def get_random_objects(model=None, queryset=None, count=float('+inf')):
     """
        Get `count` random objects for a model object `model` or from
@@ -20,8 +30,22 @@ def get_random_objects(model=None, queryset=None, count=float('+inf')):
     max_ = queryset.aggregate(Max('id'))['id__max']
     i = 0
     while i < count:
-      try:
-          yield queryset.get(pk=randint(1, max_))
-          i += 1
-      except queryset.model.DoesNotExist:
-          pass
+        try:
+            yield queryset.get(pk=randint(1, max_))
+            i += 1
+        except queryset.model.DoesNotExist:
+            pass
+
+
+def get_object_or_none(klass, *args, **kwargs):
+    """
+        Uses get() to return an object or None if the object does not exist.
+
+        klass may be a Model, Manager, or QuerySet object. All other passed
+        arguments and keyword arguments are used in the get() query.
+    """
+    queryset = _get_queryset(klass)
+    try:
+        return queryset.get(*args, **kwargs)
+    except queryset.model.DoesNotExist:
+        return None
