@@ -144,8 +144,12 @@ def routing(root=""):
 
         url, urlpatterns = routing()
 
-        @route('/home/')
+        @url(r'/home/')
         def view(request):
+            ...
+
+        @url(r'/thing/(?P<pk>\d+)/$', name="thingy")
+        def other_view(request, pk):
             ...
 
     """

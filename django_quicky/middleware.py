@@ -36,16 +36,26 @@ class StaticServe(object):
         a separate settings file to activate it at will.
     """
 
-    media, static = settings.MEDIA_URL.rstrip('/'), settings.STATIC_URL.rstrip('/')
+    # STATIC_URL must be defined at least
+    static = settings.STATIC_URL.rstrip('/')
+
+    # try to get MEDIA_URL, but if it's not defined, fallback to STATIC_URL
+    media = setting('MEDIA_URL', '').rstrip('/')
+    if not media:
+        media = static
+
     media_regex = re.compile(r'^%s/(?P<path>.*)$' % media)
     static_regex = re.compile(r'^%s/(?P<path>.*)$' % static)
 
+    # IF not MEDIA_ROOT is defined, we supposed it's the same as the
+    # STATIC_ROOT
+    MEDIA_ROOT = setting('MEDIA_ROOT') or setting('STATIC_ROOT')
 
     def process_request(self, request):
 
         match = self.media_regex.search(request.path)
         if match:
-            return serve(request, match.group(1), settings.MEDIA_ROOT)
+            return serve(request, match.group(1), self.MEDIA_ROOT)
 
         match = self.static_regex.search(request.path)
         if match:

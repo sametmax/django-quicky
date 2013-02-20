@@ -12,7 +12,7 @@ class HttpResponseException(HttpResponse, Exception):
     pass
 
 
-def setting(name, default):
+def setting(name, default=None):
     """
         Gets settings from django.conf if exists, returns default value otherwise
 
