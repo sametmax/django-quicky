@@ -39,15 +39,21 @@ class StaticServe(object):
     # STATIC_URL must be defined at least
     static_url = settings.STATIC_URL.rstrip('/')
 
-    # try to get MEDIA_URL, but if it's not defined, fallback to STATIC_URL
+    # try to get MEDIA_URL
     media_url = setting('MEDIA_URL', '').rstrip('/')
+
+    # try to get MEDIA_URL
+    admin_url = setting('ADMIN_MEDIA_PREFIX', '').rstrip('/')
 
     media_regex = re.compile(r'^%s/(?P<path>.*)$' % media_url)
     static_regex = re.compile(r'^%s/(?P<path>.*)$' % static_url)
+    admin_regex = re.compile(r'^%s/(?P<path>.*)$' % admin_url)
 
     # IF not MEDIA_ROOT is defined, we supposed it's the same as the
     # STATIC_ROOT
     MEDIA_ROOT = setting('MEDIA_ROOT') or setting('STATIC_ROOT')
+    ADMIN_ROOT = setting('ADMIN_MEDIA_PREFIX') or setting('STATIC_ROOT')
+
 
     def process_request(self, request):
 
@@ -55,6 +61,11 @@ class StaticServe(object):
             match = self.media_regex.search(request.path)
             if match:
                 return serve(request, match.group(1), self.MEDIA_ROOT)
+
+        if self.admin_regex:
+            match = self.admin_regex.search(request.path)
+            if match:
+                return serve(request, match.group(1), self.ADMIN_ROOT)
 
         match = self.static_regex.search(request.path)
         if match:
