@@ -9,11 +9,11 @@ open('MANIFEST.in', 'w').write('\n'.join((
 setup(
 
     name="django-quicky",
-    version="0.5.1",
+    version="0.5.2",
     packages=find_packages('.'),
     author="Sam et Max",
     author_email="lesametlemax@gmail.com",
-    description="A collection of toys to skip the forplay with Django and go straight to the point: url and view decorators",
+    description="A collection of tools to use to quickly setup Django.",
     long_description=open('README.md').read(),
     include_package_data=True,
     install_requires=['django'],
