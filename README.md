@@ -1,9 +1,9 @@
 Django-quicky
 ==============
 
-A collection of toys to skip the forplay with Django and go straight to the point: url and view decorators.
+A collection of tools to use to quickly setup Django.
 
-You will fall in love with it if you ever had the fantasm you could do:
+You will fall in love with it if you ever wished you could do:
 
     @url('/user/\d+')
     @view(render_to='user.html'):
@@ -17,16 +17,16 @@ You will fall in love with it if you ever had the fantasm you could do:
         ...
         return context
 
-And yes, this is alpha software, but you already want it, so don't fight it !
+This is beta software, but it already use it in production.
 
-So `pip install django-quicky`.
+Just `pip install django-quicky`.
 
 Url decorators
 ===============
 
 If you like micro frameworks like <a href="http://bottlepy.org/docs/dev/">bottle</a>, you probably miss the very easy way to declare a route.
 
-Shhh, baby. Talk no more:
+Now you can do this:
 
     from django_quicky import routing
 
@@ -76,7 +76,7 @@ Of course, your view needs to return the proper status code.
 View decorators
 ===============
 
-Rendering template and json bore you to death ? Just say the word:
+Rendering template and json bore you to death ?
 
 
     from django_quicky import view
@@ -90,8 +90,11 @@ Rendering template and json bore you to death ? Just say the word:
     def an_json_view(request):
         return {'stuff': stuff}
 
+    @view(render_to='raw')
+    def an_json_view(request):
+        return 'hey'
 
-For the first one, the returned dictionary will be used as a context to render the template. For the second one, it will be serialised to JSON.
+For the first one, the returned dictionary will be used as a context (with RequestContext) to render the template. For the second one, it will be serialised to JSON. The last one will just return the string.
 
 **/!\ WARNING:**
 
@@ -101,9 +104,7 @@ The view decorator should always be the first decorator to be applied (the lowes
 Conditional rendering
 =======================
 
-Because I know you like dirty talking and big words...
-
-You can also declare alternative rendering:
+You can also declare alternative rendering base on conditions, for one view:
 
 
     from django_quicky import view
@@ -160,7 +161,7 @@ Serve static middleware
 ========================
 
 
-Serving static files in dev without worries:
+Serving static files IN DEV without worries:
 
 
     if DEBUG:
@@ -200,6 +201,11 @@ Also remember that when it comes to decorators, **order matters**. Most of the t
 If you don't do this, some decorators will never be executed as `@view` bypass decorators applied before it and `@url` by pass decorators after it.
 
 Also, the order in which you declare your fonction matters, just like patterns order matter in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the times, since the others will never have a chance to match.
+
+Last words
+=============
+
+There are other utility functions, but I didn't take the time to document them, so dig in the code. fields.py contains some useful model fields, utils.py has some shortcut functions and and models.py comes with tools to get random entries or patch a model.
 
 ------------------------------
 
