@@ -1,9 +1,9 @@
 Django-quicky
 ==============
 
-A collection of tools to use to quickly setup Django.
+A collection of tools to make setting up Django quicker.
 
-You will fall in love with it if you ever wished you could do:
+You will love this tool if you ever wished you could do:
 
     @url('/user/\d+')
     @view(render_to='user.html'):
@@ -17,14 +17,15 @@ You will fall in love with it if you ever wished you could do:
         ...
         return context
 
-This is beta software, but it already use it in production.
+Note that this software is beta, but it's already used in production.
 
 Just `pip install django-quicky`.
+
 
 Url decorators
 ===============
 
-If you like micro frameworks like <a href="http://bottlepy.org/docs/dev/">bottle</a>, you probably miss the very easy way to declare a route.
+If you like micro frameworks like [bottle](http://bottlepy.org/docs/dev/), you probably miss the very easy way to declare a route.
 
 Now you can do this:
 
@@ -43,16 +44,15 @@ Now you can do this:
     def an_ordinary_view(request):
         ...
 
-
-Just declare your routing in the view. And use your view file in `URL_ROOT` or any `include()` like you would do with `urls.py`.
+Just declare your routes in the view. And use your view file in `URL_ROOT` or any `include()` like you would do with `urls.py`.
 
 **Remember, order matters, so:**
 
-- views declared first will match first. Avoid declaring `@url(r'^$')` first (at the begining of views.py) or it will prevent other from matching.
+- views declared first will match first. Avoid declaring `@url(r'^$')` first (at the begining of views.py) or it will prevent others from matching.
 - when using several `@url` on the same view, the first applied (the lowest `@url` in the decorators pile) will match first.
 - always put `@url` as the LAST decorator applied (at the very top of the decorators pile).
 
-If you are in the mood for fancy stuff, like adding an url manually, just do:
+If you are in the mood for fancy stuff, and feel like adding a url manually, just do:
 
     urlpatterns.add_url(url, view, [kwargs, name, prefix])
 
@@ -64,7 +64,7 @@ And since you often add the admin url:
 
     urlpatterns.add_admin(url)
 
-Adding http error views is neither hard nor most of the time useful, but for consitency:
+Adding http error views is neither hard nor useful (most of the time), but for completeness:
 
     @url.http404
     def http404(request):
@@ -76,7 +76,7 @@ Of course, your view needs to return the proper status code.
 View decorators
 ===============
 
-Rendering template and json bore you to death ?
+Rendering template and json bore you to death?
 
 
     from django_quicky import view
@@ -104,8 +104,7 @@ The view decorator should always be the first decorator to be applied (the lowes
 Conditional rendering
 =======================
 
-You can also declare alternative rendering base on conditions, for one view:
-
+You can also declare alternatives based on a condition, for a single view:
 
     from django_quicky import view
 
@@ -122,12 +121,11 @@ You can also declare alternative rendering base on conditions, for one view:
     def json_view(request, context):
         return context
 
-The first view will be rendered as-is if it receives a normal GET request. The second vew will be rendered only for POST requests, but will be passed the result of the first view before. The second vew will be rendered only for AJAX requests, and as JSON, but will be passed the result of the first view before.
+The first view will be rendered as-is if it receives a normal GET request. The second view will be rendered only for POST requests, but will be passed the result of the execution of the first view. The second view will be rendered only for AJAX requests, and as JSON, but will be passed the result of the execution first view.
 
 Just remember that alternative views must accept `context` as a parameter, because they will always receive the result of the main view.
 
-Oh, and of you can define your own conditions:
-
+Oh, and of course you can define your own conditions:
 
     @view(render_to='template.html')
     def common_views(request):
@@ -142,8 +140,7 @@ Oh, and of you can define your own conditions:
 Super user middleware
 ======================
 
-
-Double authentification ? Short session timeout ? Permission issue ? Loooooooong password.
+Double authentification? Short session timeout? Permission issue? Loooooooong password.
 
 In, dev, just do:
 
@@ -154,15 +151,13 @@ In, dev, just do:
         )
 
 
-You wil always be logged in as a super user. No password required. No timeout.
+You will always be logged in as a super user. No password required. No timeout.
 
 
 Serve static middleware
 ========================
 
-
 Serving static files IN DEV without worries:
-
 
     if DEBUG:
 
@@ -172,12 +167,13 @@ Serving static files IN DEV without worries:
 
 And if you do want to test your site with `DEBUG` set to False, you can just remove the condition.
 
-(Idea borrowed from the excellent <a href="https://bitbucket.org/offline/django-annoying/wiki/Home">django-annoying</a>, but I stripped the internal test on `DEBUG` which is a pain for testing.)
+(Idea borrowed from the excellent [django-annoying](https://bitbucket.org/offline/django-annoying/wiki/Home), but I stripped the internal test on `DEBUG` which is a pain during testing.)
+
 
 Settings context processor
 ==========================
 
-Because you always need access to settings in your template one day or the other, but most of the time, right now:
+Because everyone ends up needing access to the settings in his templates one day or the other:
 
     TEMPLATE_CONTEXT_PROCESSORS = (
         ...
@@ -188,27 +184,28 @@ Because you always need access to settings in your template one day or the other
 DEBUGGING
 ==========
 
-The first rule when debugging decorators, is to be sure you use the right syntax: `@decorator` and `@decorator()` are all very different and both valid. In django-quickly case, all decorators should be called with `@decorator()` or `@decorator(arguments)`.
+The first rule when debugging decorators, is to be sure you use the right syntax: `@decorator` and `@decorator()` are very different and both syntaxically valid. In django-quickly's case, all decorators should be called with `@decorator()` or `@decorator(arguments)`.
 
 Also remember that when it comes to decorators, **order matters**. Most of the time, you don't care about the order you apply your decorators, but in this case, you should ALWAYS apply `@view` first and `@url` last. E.G:
 
-    url(r'$')
+    @url(r'$')
     @login_required
     @view('app/home.html')
     def home(request):
         ...
 
-If you don't do this, some decorators will never be executed as `@view` bypass decorators applied before it and `@url` by pass decorators after it.
+If you don't do this, some decorators will never be executed as `@view` bypasses decorators applied before it and `@url` bypasses decorators after it.
 
-Also, the order in which you declare your fonction matters, just like patterns order matter in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the times, since the others will never have a chance to match.
+Also, the order in which you declare your fonction matters, just like patterns order matters in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the time, since the others will never have a chance to match.
+
 
 Last words
 =============
 
-There are other utility functions, but I didn't take the time to document them, so dig in the code. fields.py contains some useful model fields, utils.py has some shortcut functions and and models.py comes with tools to get random entries or patch a model.
+There are other utility functions, but I didn't take the time to document them here, so you'll have to dig in the code. fields.py contains some useful model fields, utils.py has some shortcut functions and models.py comes with tools to get random entries or patch a model.
 
 ------------------------------
 
-BTW, it's under the <a href="http://www.zlib.net/zlib_license.html">zlib licence</a>.
+BTW, it's under the [zlib licence](http://www.zlib.net/zlib_license.html).
 
-It embed <a href="https://github.com/amnong/namegen">namegen</a>, a name generator under BSD licence.
+It embed [namegen](https://github.com/amnong/namegen), a name generator under BSD licence.
