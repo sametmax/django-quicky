@@ -57,19 +57,25 @@ class StaticServe(object):
 
     def process_request(self, request):
 
+        protocol = 'http' + ('', 's')[request.is_secure()]
+        prefix = protocol + '://' + request.META['HTTP_HOST']
+        abspath = prefix + request.path
+
         if self.media_url:
-            match = self.media_regex.search(request.path)
+            path = abspath if prefix in self.media_url else request.path
+            match = self.media_regex.search(path)
             if match:
                 return serve(request, match.group(1), self.MEDIA_ROOT)
 
-        if self.admin_regex:
-            match = self.admin_regex.search(request.path)
+        if self.admin_url:
+            path = abspath if prefix in self.admin_url else request.path
+            match = self.admin_regex.search(path)
             if match:
                 return serve(request, match.group(1), self.ADMIN_ROOT)
 
-        match = self.static_regex.search(request.path)
+        path = abspath if prefix in self.static_url else request.path
+        match = self.static_regex.search(path)
         if match:
-            return serve_static(request, match.group(1), insecure=True)
 
 
 class AutoLogNewUser(object):
