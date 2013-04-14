@@ -1,7 +1,10 @@
 Django-quicky
 ==============
 
-A collection of tools to make setting up Django quicker.
+A collection of tools to make setting up Django quicker. 
+
+It is NOT a microframework and is meant to be used withing an ordinary Django 
+setup as it's fully compatible with the standard usages.
 
 You will love this tool if you ever wished you could do:
 
