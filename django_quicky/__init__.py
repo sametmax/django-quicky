@@ -9,6 +9,6 @@ __VERSION__ = "0.5.1"
 # of the scope of Django and the next imports will fails because
 # without any settings.py file provided
 from decorators import view, routing
-from utils import setting
+from utils import setting, load_config
 from models import get_object_or_none
 

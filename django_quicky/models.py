@@ -6,10 +6,6 @@ import types
 
 from random import randint
 
-from django.shortcuts import _get_queryset
-from django.db.models import Max
-from django.db.models.fields import Field
-
 
 __all__ = ['get_random_objects', 'get_object_or_none', 'patch_model']
 
@@ -23,7 +19,7 @@ def get_random_objects(model=None, queryset=None, count=float('+inf')):
        You model must have an auto increment id for it to work and it should
        be available on the `id` attribute.
     """
-
+    from django.db.models import Max
     if not queryset:
         try:
             queryset = model.objects.all()
@@ -47,6 +43,8 @@ def get_object_or_none(klass, *args, **kwargs):
         klass may be a Model, Manager, or QuerySet object. All other passed
         arguments and keyword arguments are used in the get() query.
     """
+
+    from django.shortcuts import _get_queryset
     queryset = _get_queryset(klass)
     try:
         return queryset.get(*args, **kwargs)
@@ -93,6 +91,7 @@ def patch_model(model_to_patch, class_to_patch_with):
             patch_model(User, UserOverride)
 
     """
+    from django.db.models.fields import Field
 
     # The _meta attribute is where the definition of the fields is stored in
     # django model classes.

@@ -9,11 +9,7 @@ from functools import wraps, partial
 
 import django
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.conf.urls import include, url as addurl
-
-
-from django.contrib import admin
 
 from utils import HttpResponseException
 
@@ -111,7 +107,8 @@ def view(render_to=None):
             try:
                 for test, view, rendering in func.conditional_calls:
                     if test(request, *args, **kwargs):
-                        response = view(request, context=func(request, *args, **kwargs),
+                        response = view(request,
+                                         context=func(request, *args, **kwargs),
                                         *args, **kwargs)
                         break
 
@@ -121,12 +118,15 @@ def view(render_to=None):
                 rendering = rendering or render_to
 
                 if rendering and not isinstance(response, HttpResponse):
+
                     if rendering == 'json':
                         return HttpResponse(json.dumps(response),
                                             mimetype="application/json")
                     if rendering == 'raw':
                         return HttpResponse(response)
-                    return render(request, rendering, response)
+
+                    return HttpResponse(response, content_type=rendering)
+
                 return response
             except HttpResponseException as e:
                 return e
@@ -203,6 +203,8 @@ class UrlList(list):
 
 
     def add_admin(self, url):
+
+        from django.contrib import admin
 
         if not UrlList.admin_added:
             admin.autodiscover()
