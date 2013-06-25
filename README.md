@@ -180,6 +180,31 @@ Because everyone ends up needing access to the settings in his templates one day
         "django_quicky.context_processors.settings"
     )
 
+Loading settings
+=====================
+
+When you are not in Django, you may still want to import some django pieces, but they require a settings file.
+
+This function make it easy to do so:
+
+    from django_quicky import load_config
+    load_config('/absolute/path/to/setting/file.py')
+
+You can also call it with a relative path:
+
+    load_config('../../relative/path/to/setting/file.py')
+
+But the starting point will be the one given with os.getcwd(), which is probably not what you want. You can force a starting point, most often you'll want the current file, by passing it manually:
+
+    load_config('../../relative/path/to/setting/file.py', starting_point=__file__)
+
+`starting_point` can be either a file (basename will be stripped) or a directory.
+
+You can also pass a directory path, in which case Python will try to load a settings module from this directory:
+
+    load_config('/path/to/settings/directory')
+
+It will attempt to load a module named as in `os.environ['DJANGO_SETTINGS_MODULE']` or default to `settings`. You can force the name by passing the `settings_module` parameter.
 
 DEBUGGING
 ==========
