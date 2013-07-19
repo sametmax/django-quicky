@@ -76,6 +76,7 @@ class StaticServe(object):
         path = abspath if prefix in self.static_url else request.path
         match = self.static_regex.search(path)
         if match:
+            return serve_static(request, match.group(1), insecure=True)
 
 
 class AutoLogNewUser(object):
