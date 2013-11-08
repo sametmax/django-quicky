@@ -1,0 +1,16 @@
+BeautifulSoup
+arrow
+fabtools
+minibelt
+django-cache-panel
+django-celery
+django-compressor
+django-redis-cache
+django-redis-sessions
+django-registration
+django-robots
+django-rosetta
+django-sentry
+haystack
+djangorestframework
+requests
