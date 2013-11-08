@@ -8,7 +8,11 @@ import os
 import sys
 
 from django.http import HttpResponse
-from django.core.management import setup_environ
+try:
+    from django.core.management import setup_environ
+except  ImportError:
+    from django.conf import settings
+    setup_environ = lambda module: settings.configure(**module.__dict__)
 
 
 __all__ = ['HttpResponseException', 'setting', 'get_client_ip', 'load_config']
