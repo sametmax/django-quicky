@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 
-import django_quicky
+
 
 from setuptools import setup, find_packages
 
@@ -11,7 +12,7 @@ open('MANIFEST.in', 'w').write('\n'.join((
 setup(
 
     name="django-quicky",
-    version=django_quicky.__version__,
+    version="0.6.3",
     packages=find_packages('.'),
     author="Sam et Max",
     author_email="lesametlemax@gmail.com",
