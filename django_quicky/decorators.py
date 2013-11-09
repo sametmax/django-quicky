@@ -10,6 +10,7 @@ from functools import wraps, partial
 import django
 from django.http import HttpResponse
 from django.conf.urls import include, url as addurl
+from django.shortcuts import render
 
 from utils import HttpResponseException
 
@@ -53,7 +54,7 @@ render_if_get = partial(render_if, condition=lambda r, *a, **k: r.method == 'GET
 render_if_post = partial(render_if, condition=lambda r, *a, **k: r.method == 'POST')
 
 
-def view(render_to=None):
+def view(render_to=None, *args, **kwargs):
     """
         Decorate a view to allow it to return only a dictionary and be rendered
         to either a template or json.
@@ -103,7 +104,6 @@ def view(render_to=None):
 
         @wraps(func)
         def wrapper(request, *args, **kwargs):
-
             try:
                 for test, view, rendering in func.conditional_calls:
                     if test(request, *args, **kwargs):
@@ -121,11 +121,13 @@ def view(render_to=None):
 
                     if rendering == 'json':
                         return HttpResponse(json.dumps(response),
-                                            mimetype="application/json")
+                                            mimetype="application/json",
+                                            *args, **kwargs)
                     if rendering == 'raw':
-                        return HttpResponse(response)
+                        return HttpResponse(response, *args, **kwargs)
 
-                    return HttpResponse(response, content_type=rendering)
+                    return render(request, rendering, response, *args, **kwargs)
+
 
                 return response
             except HttpResponseException as e:
