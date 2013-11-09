@@ -93,6 +93,9 @@ def view(render_to=None, *args, **kwargs):
         a dictionary which will be rendered as json.
     """
 
+    decorator_args = args
+    decorator_kwargs = kwargs
+
     def decorator(func):
 
         func.conditional_calls = []
@@ -122,11 +125,13 @@ def view(render_to=None, *args, **kwargs):
                     if rendering == 'json':
                         return HttpResponse(json.dumps(response),
                                             mimetype="application/json",
-                                            *args, **kwargs)
+                                            *decorator_args, **decorator_kwargs)
                     if rendering == 'raw':
-                        return HttpResponse(response, *args, **kwargs)
+                        return HttpResponse(response,
+                                            *decorator_args, **decorator_kwargs)
 
-                    return render(request, rendering, response, *args, **kwargs)
+                    return render(request, rendering, response,
+                                  *decorator_args, **decorator_kwargs)
 
 
                 return response
