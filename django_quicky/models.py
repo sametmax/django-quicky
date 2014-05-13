@@ -132,3 +132,5 @@ def patch_model(model_to_patch, class_to_patch_with):
 
         # Add the new field/method name and object to the model.
         model_to_patch.add_to_class(name, obj)
+
+

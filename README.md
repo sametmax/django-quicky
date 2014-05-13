@@ -1,9 +1,9 @@
 Django-quicky
 ==============
 
-A collection of tools to make setting up Django quicker. 
+A collection of tools to make setting up Django quicker.
 
-It is NOT a microframework and is meant to be used withing an ordinary Django 
+It is NOT a microframework and is meant to be used withing an ordinary Django
 setup as it's fully compatible with the standard usages.
 
 You will love this tool if you ever wished you could do:
@@ -42,7 +42,7 @@ url, urlpatterns = routing()
 
 @url('/any/regex/django/accepts')
 def an_ordinary_view(request):
-    # ...
+    #...
 
 
 @url('/you/can/stack/routing')
@@ -73,9 +73,7 @@ urlpatterns.include(url, view, [name, prefix])
 
 And since you often add the admin url:
 
-```python
-urlpatterns.add_admin(url)
-```
+    urlpatterns.add_admin(url)
 
 Adding http error views is neither hard nor useful (most of the time), but for completeness:
 
@@ -84,7 +82,6 @@ Adding http error views is neither hard nor useful (most of the time), but for c
 def http404(request):
     # ...
 ```
-
 Of course, your view needs to return the proper status code.
 
 
@@ -92,6 +89,7 @@ View decorators
 ===============
 
 Rendering template and json bore you to death?
+
 
 ```python
 from django_quicky import view
@@ -156,7 +154,6 @@ def conditional_view(request, context):
     return context
 ```
 
-
 Super user middleware
 ======================
 
@@ -171,7 +168,6 @@ if DEBUG:
         'django_quicky.middleware.ForceSuperUserMiddleWare',
     )
 ```
-
 
 You will always be logged in as a super user. No password required. No timeout.
 
@@ -191,10 +187,7 @@ if DEBUG:
 
 And if you do want to test your site with `DEBUG` set to False, you can just remove the condition.
 
-The middleware accesses `request.META['HTTP_HOST']` on requests but uses `"django_quicky_fake_host"`
-as a fallback because Django's test client doesn't provide the host header. If you want to specify
-a different fallback host, you can do so by setting `DJANGO_QUICKY_DEFAULT_HOST` in your settings.py
-file.
+The middleware accesses ```request.META['HTTP_HOST']``` on requests but uses "django_quicky_fake_host" as a fallback for clients that don't provide it via headers (e.g: Django's test client). If you want to specify a different fallback host, you can do so by setting ```DJANGO_QUICKY_DEFAULT_HOST``` in your settings.py file.
 
 (Idea borrowed from the excellent [django-annoying](https://bitbucket.org/offline/django-annoying/wiki/Home), but I stripped the internal test on `DEBUG` which is a pain during testing.)
 
@@ -206,7 +199,7 @@ Because everyone ends up needing access to the settings in his templates one day
 
 ```python
 TEMPLATE_CONTEXT_PROCESSORS = (
-    # ...
+    ...
     "django_quicky.context_processors.settings"
 )
 ```
@@ -259,7 +252,6 @@ Also remember that when it comes to decorators, **order matters**. Most of the t
 def home(request):
     # ...
 ```
-
 If you don't do this, some decorators will never be executed as `@view` bypasses decorators applied before it and `@url` bypasses decorators after it.
 
 Also, the order in which you declare your fonction matters, just like patterns order matters in `urls.py`. So avoid putting global matching urls such as `@url('^$')` at the begining of `views.py`, otherwise this view will be used all the time, since the others will never have a chance to match.

@@ -1,9 +1,0 @@
-South
-Werkzeug
-django-debug-toolbar
-django-extensions
-django-template-repl
-grin
-ipdb
-path.py
-pytest-django

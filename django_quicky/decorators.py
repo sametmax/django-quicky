@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # vim: ai ts=4 sts=4 et sw=4 nu
 
-
 import json
 import types
 from functools import wraps, partial
@@ -12,7 +11,7 @@ from django.http import HttpResponse
 from django.conf.urls import include, url as addurl
 from django.shortcuts import render
 
-from utils import HttpResponseException
+from .utils import HttpResponseException
 
 
 __all__ = ["view", "routing"]
@@ -93,6 +92,8 @@ def view(render_to=None, *args, **kwargs):
         a dictionary which will be rendered as json.
     """
 
+    from django.shortcuts import render
+
     decorator_args = args
     decorator_kwargs = kwargs
 
@@ -110,9 +111,8 @@ def view(render_to=None, *args, **kwargs):
             try:
                 for test, view, rendering in func.conditional_calls:
                     if test(request, *args, **kwargs):
-                        response = view(request,
-                                         context=func(request, *args, **kwargs),
-                                        *args, **kwargs)
+                        ctx = func(request, *args, **kwargs) or {}
+                        response = view(request, context=ctx, *args, **kwargs)
                         break
 
                 else:
@@ -175,20 +175,42 @@ def routing(root=""):
 
         return decorator
 
-    def http403(func):
-        django.conf.urls.handler403 = func
-        return func
+
+    def http403(template):
+
+        def decorator(func):
+            func = view(render_to=template)(func, status=403)
+            django.conf.urls.handler403 = func
+            return func
+
+        return decorator
+
     url.http403 = http403
 
-    def http404(func):
-        django.conf.urls.handler404 = func
-        return func
+
+    def http404(template):
+
+        def decorator(func):
+            func = view(render_to=template)(func, status=404)
+            django.conf.urls.handler404 = func
+            return func
+
+        return decorator
+
     url.http404 = http404
 
-    def http405(func):
-        django.conf.urls.handler405 = func
-        return func
-    url.http405 = http405
+
+    def http405(template):
+
+        def decorator(func):
+            func = view(render_to=template)(func, status=405)
+            django.conf.urls.handler405 = func
+            return func
+
+        return decorator
+
+    url.http405 = http404
+
 
     return url, urlpatterns
 

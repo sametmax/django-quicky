@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #!/usr/bin/env python
 # -*- coding= UTF-8 -*-
 
@@ -35,4 +37,4 @@ class Command(BaseCommand):
                 return
 
         Session.objects.all().delete()
-        print '%s sessions deleted' % total
+        print('%s sessions deleted' % total)
