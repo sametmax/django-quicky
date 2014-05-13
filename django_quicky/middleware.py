@@ -58,7 +58,7 @@ class StaticServe(object):
     def process_request(self, request):
 
         protocol = 'http' + ('', 's')[request.is_secure()]
-        prefix = protocol + '://' + request.META['HTTP_HOST']
+        prefix = protocol + '://' + request.META.get('HTTP_HOST', 'testserver')
         abspath = prefix + request.path
 
         if self.media_url:
