@@ -170,6 +170,11 @@ Serving static files IN DEV without worries:
 
 And if you do want to test your site with `DEBUG` set to False, you can just remove the condition.
 
+The middleware accesses `request.META['HTTP_HOST']` on requests but uses `"django_quicky_fake_host"`
+as a fallback because Django's test client doesn't provide the host header. If you want to specify
+a different fallback host, you can do so by setting `DJANGO_QUICKY_DEFAULT_HOST` in your settings.py
+file.
+
 (Idea borrowed from the excellent [django-annoying](https://bitbucket.org/offline/django-annoying/wiki/Home), but I stripped the internal test on `DEBUG` which is a pain during testing.)
 
 

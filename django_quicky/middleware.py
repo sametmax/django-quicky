@@ -58,7 +58,9 @@ class StaticServe(object):
     def process_request(self, request):
 
         protocol = 'http' + ('', 's')[request.is_secure()]
-        prefix = protocol + '://' + request.META['HTTP_HOST']
+        host = request.META.get('HTTP_HOST', setting(
+            'DJANGO_QUICKY_DEFAULT_HOST', 'django_quicky_fake_host'))
+        prefix = protocol + '://' + host
         abspath = prefix + request.path
 
         if self.media_url:
