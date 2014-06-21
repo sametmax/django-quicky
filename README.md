@@ -10,8 +10,8 @@ You will love this tool if you ever wished you could do:
 
 ```python
 @url('/user/\d+')
-@view(render_to='user.html'):
-def user_view(request, id)
+@view(render_to='user.html')
+def user_view(request, id):
     # ...
     return {'users': users}
 
