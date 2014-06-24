@@ -273,6 +273,6 @@ There are other utility functions, but I didn't take the time to document them h
 
 ------------------------------
 
-BTW, it's under the [zlib licence](http://www.zlib.net/zlib_license.html).
+BTW, it's under the [zlib license](http://www.zlib.net/zlib_license.html).
 
-It embeds [namegen](https://github.com/amnong/namegen), a name generator under BSD licence.
+It embeds [namegen](https://github.com/amnong/namegen), a name generator under BSD license.
