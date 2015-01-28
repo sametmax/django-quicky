@@ -35,4 +35,4 @@ class Command(BaseCommand):
                 return
 
         Session.objects.all().delete()
-        print '%s sessions deleted' % total
+        print('%s sessions deleted' % total)
