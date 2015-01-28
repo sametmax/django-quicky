@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.conf.urls import include, url as addurl
 from django.shortcuts import render
 
-from utils import HttpResponseException
+from .utils import HttpResponseException
 
 
 __all__ = ["view", "routing"]

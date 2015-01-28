@@ -5,7 +5,7 @@
 
 VERSION = __version__ = "0.6.4"
 
-from decorators import view, routing
-from utils import setting, load_config
-from models import get_object_or_none
+from .decorators import view, routing
+from .utils import setting, load_config
+from .models import get_object_or_none
 

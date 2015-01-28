@@ -12,9 +12,9 @@ from django.shortcuts import redirect, render
 
 from django.contrib.auth.models import User
 
-from namegen.namegen import NameGenerator
+from .namegen.namegen import NameGenerator
 
-from utils import setting
+from .utils import setting
 
 
 class ForceSuperUserMiddleWare(object):
