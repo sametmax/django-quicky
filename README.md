@@ -10,8 +10,8 @@ You will love this tool if you ever wished you could do:
 
 ```python
 @url('/user/\d+')
-@view(render_to='user.html'):
-def user_view(request, id)
+@view(render_to='user.html')
+def user_view(request, id):
     # ...
     return {'users': users}
 
@@ -100,11 +100,12 @@ def an_ordinary_view(request):
 
 
 @view(render_to='json')
-def an_json_view(request):
+def a_json_view(request):
     return {'stuff': stuff}
 
+
 @view(render_to='raw')
-def an_json_view(request):
+def a_raw_view(request):
     return 'hey'
 ```
 
@@ -264,6 +265,6 @@ There are other utility functions, but I didn't take the time to document them h
 
 ------------------------------
 
-BTW, it's under the [zlib licence](http://www.zlib.net/zlib_license.html).
+BTW, it's under the [zlib license](http://www.zlib.net/zlib_license.html).
 
-It embed [namegen](https://github.com/amnong/namegen), a name generator under BSD licence.
+It embeds [namegen](https://github.com/amnong/namegen), a name generator under BSD license.

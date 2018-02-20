@@ -124,9 +124,14 @@ def view(render_to=None, *args, **kwargs):
                 if rendering and not isinstance(response, HttpResponse):
 
                     if rendering == 'json':
-                        return HttpResponse(json.dumps(response),
-                                            mimetype="application/json",
-                                            *decorator_args, **decorator_kwargs)
+                        if django.VERSION[0] >= 1 and django.VERSION[1] >= 7:
+                            return HttpResponse(json.dumps(response),
+                                                content_type="application/json",
+                                                *decorator_args, **decorator_kwargs)
+                        else:
+                            return HttpResponse(json.dumps(response),
+                                                mimetype="application/json",
+                                                *decorator_args, **decorator_kwargs)
                     if rendering == 'raw':
                         return HttpResponse(response,
                                             *decorator_args, **decorator_kwargs)
