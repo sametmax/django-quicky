@@ -92,6 +92,7 @@ def view(render_to=None, *args, **kwargs):
         a dictionary which will be rendered as json.
     """
 
+    # trying to avoid a circular reference
     from django.shortcuts import render
 
     decorator_args = args

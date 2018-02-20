@@ -10,17 +10,13 @@
 
 from django.core.management.base import BaseCommand
 
-from django_quicky.utils import generate_secret_key
+from django_quicky.utils import secret_key
 
 
 class Command(BaseCommand):
 
     help = 'Generates a Django secret key. Does not add it to settings.py.'
 
+    def handle(self, *args, **kwargs):
+        self.stdout.write(secret_key())
 
-    def handle_noargs(self):
-        print(generate_secret_key())
-
-
-if __name__ == '__main__':
-    print(generate_secret_key())
