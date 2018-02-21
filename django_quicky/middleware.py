@@ -6,15 +6,45 @@ import re
 import random
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.views.static import serve
 from django.contrib.staticfiles.views import serve as serve_static
 from django.shortcuts import redirect, render
 
-from django.contrib.auth.models import User
-
 from .namegen.namegen import NameGenerator
 
 from .utils import setting
+
+User = get_user_model()
+
+DJANGO_QUICKY_SUPERUSER_USERNAME = getattr(
+    settings,
+    'DJANGO_QUICKY_SUPERUSER_USERNAME',
+    'admin'
+)
+
+DJANGO_QUICKY_SUPERUSER_PASSWORD = getattr(
+    settings,
+    'DJANGO_QUICKY_SUPERUSER_PASSWORD',
+    'admin'
+)
+
+DJANGO_QUICKY_SUPERUSER_EMAIL = getattr(
+    settings,
+    'DJANGO_QUICKY_SUPERUSER_EMAIL',
+    'admin@admin.admin'
+)
+
+def force_super_user_middleware(get_response):
+
+    class_middleware = ForceSuperUserMiddleWare()
+
+    def middleware(request):
+        class_middleware.process_request(request)
+        response = get_response(request)
+        return response
+
+    return middleware
 
 
 class ForceSuperUserMiddleWare(object):
@@ -25,7 +55,14 @@ class ForceSuperUserMiddleWare(object):
 
     def process_request(self, request):
 
-        request.user = User.objects.filter(is_superuser=True)[0]
+        try:
+            request.user = User.objects.filter(is_superuser=True)[0]
+        except (User.DoesNotExist, IndexError):
+            request.user = User.objects.create_superuser(
+                username=DJANGO_QUICKY_SUPERUSER_USERNAME,
+                email=DJANGO_QUICKY_SUPERUSER_PASSWORD,
+                password=DJANGO_QUICKY_SUPERUSER_EMAIL
+            )
 
 
 class StaticServe(object):
