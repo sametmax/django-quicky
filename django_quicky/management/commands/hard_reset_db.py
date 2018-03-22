@@ -50,6 +50,7 @@ class Command(BaseCommand):
 
         for app in apps_list:
 
+
             for model in app.get_models():
                 model.objects.raw(
                     'DROP TABLE {}'.format( model._meta.db_table)
@@ -62,10 +63,16 @@ class Command(BaseCommand):
                     os.remove(f)
 
         for app in apps_list:
+            try:
                 call_command('makemigrations', app.label)
+            except CommandError as e:
+                self.stderr.write(str(e))
 
         for app in apps_list:
-            call_command('migrate', app.label)
+            try:
+                call_command('migrate', app.label)
+            except CommandError as e:
+                self.stderr.write(str(e))
 
         for app in apps_list:
             migrations_files = os.path.join(app.path, 'fixtures', '*.json')
